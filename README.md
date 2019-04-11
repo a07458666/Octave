@@ -1,1 +1,2 @@
-# Octave
+# MachineLearning
+Course exercises
