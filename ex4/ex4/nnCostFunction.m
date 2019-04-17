@@ -62,24 +62,29 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%將y從1~9轉為[1,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,0,0,0,0]...
+Y = zeros( m, num_labels);
+for i = 1 : m
+  Y(i,y(i)) = 1;
+endfor
 
+X = [ones(size(X(:,1))),X]; % add 1 value
+A1 = X;
+Z2 = A1 * Theta1';
+A2 = [ones(size(Z2(:,1))),sigmoid(Z2)]; % add 1 value
+Z3 = A2 * Theta2';
+A3 = sigmoid(Z3);
 
+weaken = (lambda/ (2 * m)) * (sum(sum(Theta1(:,2:end) .^ 2)) + sum(sum(Theta2(:,2:end) .^ 2)));
+J = (1/m)*sum(sum(-Y.*log(A3) - (1-Y) .* log(1-A3)));
+J = J + weaken;
+%delta3 = A3 .- Y;
+%D1 = A2 * delta3;
+%delta2 = A2 .- Z3;
+%D2 = A1 * delta2;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%Theta1_grad = (1/m)*D2;
+%Theta2_grad = (1/m)*D1;
 % -------------------------------------------------------------
 
 % =========================================================================
