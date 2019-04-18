@@ -29,7 +29,6 @@ m = size(X, 1);
 J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
-
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
 %               following parts.
@@ -68,29 +67,42 @@ for i = 1 : m
   Y(i,y(i)) = 1;
 endfor
 
+% 正向傳播 FP 
 X = [ones(size(X(:,1))),X]; % add 1 value
 A1 = X;
 Z2 = A1 * Theta1';
-A2 = [ones(size(Z2(:,1))),sigmoid(Z2)]; % add 1 value
+A2 = [ones(size(Z2(:,1))), sigmoid(Z2)]; % add 1 value
 Z3 = A2 * Theta2';
 A3 = sigmoid(Z3);
 
+% 避免overfitting 消弱懲罰項次
 weaken = (lambda/ (2 * m)) * (sum(sum(Theta1(:,2:end) .^ 2)) + sum(sum(Theta2(:,2:end) .^ 2)));
+% cost function公式
 J = (1/m)*sum(sum(-Y.*log(A3) - (1-Y) .* log(1-A3)));
 J = J + weaken;
-%delta3 = A3 .- Y;
-%D1 = A2 * delta3;
-%delta2 = A2 .- Z3;
-%D2 = A1 * delta2;
 
-%Theta1_grad = (1/m)*D2;
-%Theta2_grad = (1/m)*D1;
+% 反向傳播 BP 
+delta3 = A3 .- Y;
+delta2 = delta3 * Theta2 .* sigmoidGradient([ones(size(Z2,1), 1) Z2]); %記得補上bias項
+delta2 = delta2(:, 2:end);
+
+deltaTotal2 = delta3' * A2; %算出大delta2 整個layer的誤差
+deltaTotal1 = delta2' * A1; %算出大delta1 整個layer的誤差
+
+% 正規化 regularization 考慮lambda 記得不要對bias做 正規化
+regularization1 = ((lambda/m) .* Theta1);
+regularization1 = [zeros(size(Theta1,1), 1) regularization1(:,2:end)];
+regularization2 = ((lambda/m) .* Theta2);
+regularization2 = [zeros(size(Theta2,1), 1) regularization2(:,2:end)];
+
+Theta1_grad = (1/m) * deltaTotal1 + regularization1;
+Theta2_grad = (1/m) * deltaTotal2 + regularization2;
+
 % -------------------------------------------------------------
 
 % =========================================================================
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end

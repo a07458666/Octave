@@ -117,7 +117,7 @@ fprintf('%f ', g);
 fprintf('\n\n');
 
 fprintf('Program paused. Press enter to continue.\n');
-pause(5000);
+pause;
 
 
 %% ================ Part 6: Initializing Pameters ================
