@@ -53,11 +53,17 @@ error_val   = zeros(m, 1);
 
 % ---------------------- Sample Solution ----------------------
 
-
-
-
-
-
+%計算出學習取線(Learning curves)
+for i = 1:m
+  %使用traniData 算出theta 由1組data慢慢變為全部的data
+  theta = trainLinearReg(X(1:i, :), y(1:i), lambda); 
+  %使用算出來的theta算出cost
+  [J_train, grad_train] = linearRegCostFunction(X(1:i, :), y(1:i), theta, 0); 
+  %使用trainData算出來的theta跑交叉比對資料的cost
+  [J_val, grad_val] = linearRegCostFunction(Xval, yval, theta, 0);  
+  error_train(i) = J_train;
+  error_val(i) = J_val;
+endfor
 
 % -------------------------------------------------------------
 
