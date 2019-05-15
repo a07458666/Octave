@@ -13,12 +13,8 @@ centroids = zeros(K, size(X, 2));
 %               the dataset X
 %
 
-
-
-
-
-
-
+randidx = randperm(size(X, 1)); %將X資料打散
+centroids = X(randidx(1:K), :); %取前K筆資料
 
 % =============================================================
 

@@ -151,7 +151,7 @@ fprintf('The projected data Z has a size of: ')
 fprintf('%d ', size(Z));
 
 fprintf('\n\nProgram paused. Press enter to continue.\n');
-pause;
+pause(500);
 
 %% ==== Part 7: Visualization of Faces after PCA Dimension Reduction ====
 %  Project images to the eigen space using the top K eigen vectors and 

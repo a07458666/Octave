@@ -25,10 +25,13 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-
 for i = 1 : K
   idxC = idx == i;
-  avgVector =  sum(idxC .* X) ./ sum(idxC);
+  if (sum(idxC) > 0)
+    avgVector =  sum(idxC .* X) ./ sum(idxC);
+  else
+    avgVector = zeros(1, n);
+  endif
   centroids(i,:) = avgVector;
 endfor
 
