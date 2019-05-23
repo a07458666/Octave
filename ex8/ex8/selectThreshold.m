@@ -23,17 +23,16 @@ for epsilon = min(pval):stepsize:max(pval)
     % Note: You can use predictions = (pval < epsilon) to get a binary vector
     %       of 0's and 1's of the outlier predictions
 
-
-
-
-
-
-
-
-
-
-
-
+    %tp = true positives 真陽性 標籤為true且辨識為異常
+    %fp = false positives 假陽性 標籤為false卻辨識為異常
+    %fn = false negatives 假陰性 標籤為true但錯誤辨識為正常
+    predictions = (pval < epsilon);
+    tp = sum((yval == 1) & (predictions == 1));
+    fp = sum((yval == 0) & (predictions == 1));
+    fn = sum((yval == 1) & (predictions == 0));
+    prec = tp /(tp + fp);
+    rec = tp / (tp + fn);
+    F1 = (2 * prec * rec) / (prec + rec);
 
     % =============================================================
 
